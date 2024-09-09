@@ -1,0 +1,12 @@
+.env
+log/*
+*.pyc
+*.DS_Store
+virtual
+db.sqlite3
+google-ldap.conf
+**/migrations/**
+!**/migrations
+!**/migrations/__init__.py
+files/*
+static/*
