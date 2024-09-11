@@ -16,6 +16,16 @@ $(document).ready(function() {
             return;
         }
 
+        // Check if the file is a CSV
+        var fileType = file.type;
+        var fileName = file.name;
+        var isCSV = fileType === 'text/csv' || fileName.endsWith('.csv');
+
+        if (!isCSV) {
+            $('#statusHeader').text('Selected file is not a CSV file.').addClass('alert-danger').removeClass('d-none');
+            return;
+        }
+
         var formData = new FormData(this);
 
         // Show the progress container and status header

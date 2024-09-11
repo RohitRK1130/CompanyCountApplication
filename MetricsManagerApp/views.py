@@ -22,6 +22,9 @@ extra_param = {"AppName": "MetricsManagerApp"}
 
 # Views
 
+def pagenotfound(request, exception):
+    return render(request, "404_error.html")
+
 def register(request):
     try:
         if request.method == 'POST':
@@ -81,9 +84,11 @@ def user_logout(request):
         messages.error(request, 'An unexpected error occurred. Please try again later.')
         return redirect('home')
 
-@login_required
 def home(request):
     try:
+        if not request.user.is_authenticated:
+            return redirect('login')
+
         logger.info(f"User {request.user.username} accessed home page", extra=extra_param)
         return render(request, 'home.html')
     except Exception as e:
@@ -202,6 +207,11 @@ def handle_file_upload(request):
                     logger.error("Uploaded file exceeds 1GB limit", extra=extra_param)
                     return JsonResponse({'error': 'File size exceeds 1GB limit.'}, status=400)
 
+                # Check if the file is a CSV
+                if not uploaded_file.file.name.lower().endswith('.csv'):
+                    logger.error("Uploaded file is not a CSV", extra={'request': request})
+                    return JsonResponse({'error': 'Uploaded file is not a CSV.'}, status=400)
+
                 process_csv.delay(uploaded_file.file.path)
                 logger.info(f"User {request.user.username} uploaded file successfully", extra=extra_param)
                 return JsonResponse({'status': 'success'})
@@ -226,8 +236,8 @@ def query_builder_data(request):
         states = State.objects.values_list('name', flat=True).distinct()
         countries = Country.objects.values_list('name', flat=True).distinct()
 
-        countries = [countries.title() for city in cities if city]
-        industries = [industries.title() for city in cities if city]
+        #countries = [countries.title() for city in cities if city]
+        #industries = [industries.title() for city in cities if city]
 
         response_data = {
             'industries': sorted(industries),
