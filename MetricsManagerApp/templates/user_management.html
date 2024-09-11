@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{% block title %}User Management{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center mb-4">User Management</h2>
+
+    <!-- Add User Button -->
+    <div class="text-center mb-4">
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addUserModal">
+            Add New User
+        </button>
+    </div>
+
+    <!-- Success and Error Containers -->
+    <div id="successContainer" class="d-none" role="alert"></div>
+    
+    <!-- User Management Modal -->
+    <div class="modal fade" id="addUserModal" tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addUserModalLabel">Add New User</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="errorContainer" class="d-none" role="alert"></div>
+                    <form id="addUserForm" method="post">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="id_username" class="form-label">Username</label>
+                            <input type="text" id="id_username" name="username" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="id_email" class="form-label">Email</label>
+                            <input type="email" id="id_email" name="email" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="id_password1" class="form-label">Password</label>
+                            <input type="password" id="id_password1" name="password1" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="id_password2" class="form-label">Confirm Password</label>
+                            <input type="password" id="id_password2" name="password2" class="form-control" required>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Add User</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- User List -->
+    <h3 class="text-center mt-4">User List</h3>
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="userTableBody">
+                <!-- User rows will be dynamically inserted here by JavaScript -->
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+{% load static %}
+<script src="{% static 'js/user_management.js' %}"></script>
+{% endblock %}

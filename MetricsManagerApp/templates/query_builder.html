@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block title %}Query Builder{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <h1 class="mb-4">Query Builder</h1>
+
+            <!-- Success Alert -->
+            <div id="resultAlert" role="alert"></div>
+
+            <!-- Query Form -->
+            <form id="queryForm" class="needs-validation mb-3" novalidate>
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label for="keyword" class="form-label">Keyword</label>
+                        <input type="text" id="keyword" name="keyword" class="form-control" placeholder="Enter keyword">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="industry" class="form-label">Industry</label>
+                        <select id="industry" name="industry" class="form-select">
+                            <option value="">Select Industry</option>
+                            <!-- Options will be dynamically added -->
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="year" class="form-label">Year Founded</label>
+                        <select id="year" name="year" class="form-select">
+                            <option value="">Select Year</option>
+                            <!-- Options will be dynamically added -->
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="country" class="form-label">country</label>
+                        <select id="country" name="country" class="form-select">
+                            <option value="">Select country</option>
+                            <!-- Options will be dynamically added -->
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="state" class="form-label">State</label>
+                        <select id="state" name="state" class="form-select">
+                            <option value="">Select State</option>
+                            <!-- Options will be dynamically added -->
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="city" class="form-label">City</label>
+                        <select id="city" name="city" class="form-select">
+                            <option value="">Select City</option>
+                            <!-- Options will be dynamically added -->
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="employee_from" class="form-label">Employees (From)</label>
+                        <input type="number" id="employee_from" name="employee_from" class="form-control" placeholder="From" min="0">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="employee_to" class="form-label">Employees (To)</label>
+                        <input type="number" id="employee_to" name="employee_to" class="form-control" placeholder="To" min="0">
+                    </div>
+                </div>
+                <div class="justify-content-between mt-3">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="reset" class="btn btn-secondary" id="resetButton">Reset</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+{% load static %}
+<script src="{% static 'js/query_builder.js' %}"></script>
+{% endblock %}

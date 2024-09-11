@@ -3,6 +3,33 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
-<h1>Welcome, {{ user.username }}!</h1>
-<p>This is your home page.</p>
+<div class="row justify-content-center mt-5">
+    <div class="col-md-6 text-center">
+        
+        {% if messages %}
+            {% for message in messages %}
+                <div 
+                    class="alert 
+                        {% if message.tags == 'success' %}alert-success alert-dismissible fade show
+                        {% elif message.tags == 'error' %}alert-danger alert-dismissible fade show
+                        {% elif message.tags == 'warning' %}alert-warning alert-dismissible fade show
+                        {% elif message.tags == 'info' %}alert-info alert-dismissible fade show
+                        {% else %}alert-secondary{% endif %}"  
+                    role="alert"
+                >
+                    {{ message }}
+                    <button 
+                        type="button" 
+                        class="btn-close" 
+                        data-bs-dismiss="alert" 
+                        aria-label="Close"
+                    ></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <h1>Welcome, {{ user.username }}!</h1>
+        <p>This is your home page.</p>
+    </div>
+</div>
 {% endblock %}
