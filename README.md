@@ -53,82 +53,14 @@ Run the following commands to set up the database schema:
 python manage.py makemigrations
 python manage.py migrate
 ```
-### 6. Set Up Celery Service
-Create a systemd service file for Celery:
+### 6. Start Celery Service (For backend proccess)
+To start the Celery Service use below command
 ```bash
-sudo nano /etc/systemd/system/celery.service
+celery -A CompanyMetrics worker --loglevel=info
 ```
-Add the following content:
-```bash
-[Unit]
-Description=Celery Service
-After=network.target
 
-[Service]
-User=ubuntu
-Group=ubuntu
-WorkingDirectory=/home/ubuntu/CompanyCountApplication
-ExecStart=/home/ubuntu/venv/bin/celery -A CompanyMetrics worker --loglevel=info
-Restart=always
-
-[Install]
-WantedBy=multi-user.target
-```
-Reload systemd to apply changes and start the Celery service:
+### 7. Start Server
+To start the server use below command
 ```bash
-sudo systemctl daemon-reload
-sudo systemctl start celery
-sudo systemctl enable celery
-```
-### 7. Set Up Gunicorn Service
-Create a systemd service file for Gunicorn:
-```bash
-sudo nano /etc/systemd/system/gunicorn.service
-```
-Add the following content:
-```bash
-[Unit]
-Description=gunicorn daemon
-After=network.target
-
-[Service]
-User=ubuntu
-Group=ubuntu
-WorkingDirectory=/home/ubuntu/CompanyCountApplication/
-ExecStart=/home/ubuntu/venv/bin/gunicorn --access-logfile - --workers=1 --preload --log-level debug --bind unix:/home/ubuntu/CompanyCountApplication/app.sock CompanyMetrics.wsgi:application
-
-[Install]
-WantedBy=multi-user.target
-```
-Reload systemd to apply changes and start the Celery service:
-```bash
-sudo systemctl daemon-reload
-sudo systemctl start gunicorn
-sudo systemctl enable gunicorn
-```
-### 6. Configure Nginx
-Create an Nginx configuration file for your project:
-```bash
-sudo nano /etc/nginx/sites-available/companycount
-```
-Add the following content:
-```bash
-server {
-    listen 80;
-    server_name 127.0.0.1 13.126.48.243;
-
-    location / {
-        proxy_pass http://unix:/home/ubuntu/CompanyCountApplication/app.sock;
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
-    }
-}
-```
-Enable the Nginx configuration and restart Nginx:
-```bash
-sudo ln -s /etc/nginx/sites-available/companycount /etc/nginx/sites-enabled
-sudo nginx -t
-sudo systemctl restart nginx
+python manage.py runserver
 ```
