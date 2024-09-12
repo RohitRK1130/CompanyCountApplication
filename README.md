@@ -1,13 +1,11 @@
 # Company Count Application
 
-This repository contains the Company Count Application, a Django-based project with Celery for task management, Gunicorn as the application server, and Nginx as a reverse proxy.
+This repository contains the Company Count Application, a Django-based project with Celery for task management.
 
 ## Prerequisites
 
 1. **Python 3.12.x**: Ensure Python 3.12.x is installed on your system.
 2. **PostgreSQL**: Required for the database.
-3. **Redis**: Required as the message broker for Celery.
-4. **Nginx**: Required as the reverse proxy.
 
 ## Setup Instructions
 
