@@ -15,6 +15,7 @@ from .tasks import process_csv
 from django.db.models import Q
 from django.core.cache import cache
 from django.views.decorators.http import require_GET
+from datetime import datetime
 
 # Logger setup
 logger = logging.getLogger(__name__)
@@ -229,9 +230,13 @@ def query_builder_data(request):
     try:
         start_time = time.time()
 
+        # Generate the years list from 1800 to the current year
+        current_year = datetime.now().year
+        years = list(range(1800, current_year + 1))
+
         # Fetch distinct values from related models
         industries = Industry.objects.values_list('name', flat=True).distinct()
-        years = Company.objects.values_list('year_founded', flat=True).distinct()
+        # years = Company.objects.values_list('year_founded', flat=True).distinct()
         cities = City.objects.values_list('name', flat=True).distinct()
         states = State.objects.values_list('name', flat=True).distinct()
         countries = Country.objects.values_list('name', flat=True).distinct()
