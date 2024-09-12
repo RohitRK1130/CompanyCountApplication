@@ -298,7 +298,7 @@ def query(request):
                 query_filters &= Q(total_employee_estimate__lte=int(employee_to))
 
             companies = Company.objects.filter(query_filters)
-            count = companies.count()
+            count = companies.values("pk").count()
 
             logger.info("Query executed successfully, record count: %d", count, extra=extra_param)
             return JsonResponse({'count': count})
